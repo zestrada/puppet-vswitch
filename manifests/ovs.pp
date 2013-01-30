@@ -6,7 +6,7 @@ class vswitch::ovs(
       if ! defined(Package["linux-image-extra-$::kernelversion"]) {
         package { "linux-image-extra-$::kernelversion": ensure => present }
       }
-      package {["openvswithc-common",
+      package {["openvswitch-common",
                 "openvswitch-switch"]:
         ensure  => $package_ensure,
         require => Package["linux-image-extra-$::kernelversion"],
