@@ -11,6 +11,8 @@ require "set"
 
 VSCTL = "/usr/bin/ovs-vsctl"
 OFCTL = "/usr/bin/ovs-ofctl"
+DPCTL = "/usr/bin/ovs-dpctl"
+
 
 module OpenVSwitch
     def self.exec(bin, cmd)
@@ -34,6 +36,10 @@ module OpenVSwitch
         return vsctl("list-ports " + bridge)
     end
 
+    def self.dpid(bridge)
+        return ofctl("show " + bridge)[0].split(" ")[2].split(":")[1]
+    end
+
     # OpenFlow
     def self.ofctl(cmd)
         return exec(OFCTL, cmd)
@@ -41,6 +47,11 @@ module OpenVSwitch
 
     def self.of_show(bridge="")
         return ofctl("show " + bridge)
+    end
+
+    # Datapath
+    def self.dpctl(cmd)
+        return exec(DPCTL, cmd)
     end
 end
 
@@ -73,6 +84,12 @@ if Facter.value(:openvswitch_module) == true && File.exists?(VSCTL)
                 setcode do
                     ports.join(",")
                 end
+            end
+        end
+
+        Facter.add("openvswitch_dpid_#{bridge}") do
+            setcode do
+                OpenVSwitch.dpid(bridge)
             end
         end
     end
