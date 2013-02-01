@@ -9,14 +9,21 @@
 require "facter"
 require "set"
 
+MODFILE = "/proc/modules"
+
+
 def get_modules
-    return File.readlines("/proc/modules").inject(Set.new){|s,l|s << l[/\w+\b/]}
+    return File.readlines(MODFILE).inject(Set.new){|s,l|s << l[/\w+\b/]}
 end
 
+
 Facter.add("kernel_modules") do
-    confine :exists => "/proc/modules"
     setcode do
+      if File.file?(MODFILE)
         modules = get_modules
         modules.to_a.join(",")
+      else
+        modules = ""
+      end
     end
 end
