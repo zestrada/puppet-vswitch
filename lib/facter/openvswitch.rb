@@ -5,8 +5,8 @@
 # Resolution:
 #
 # Caveats:
+
 require "facter"
-require "kernel_modules"
 require "set"
 
 VSCTL = "/usr/bin/ovs-vsctl"
@@ -63,6 +63,9 @@ Facter.add("openvswitch_module") do
             true
         elsif modules.include? "openvswitch_kmod"
             true
+        else
+           Facter.debug("\nno kernel_modules availiable! Setting openvswitch module to false\n")
+           false
         end
     end
 end

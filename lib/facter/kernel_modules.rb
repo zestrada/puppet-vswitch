@@ -18,6 +18,7 @@ end
 
 
 Facter.add("kernel_modules") do
+    confine :kernel => "Linux"
     setcode do
       if File.file?(MODFILE)
         modules = get_modules
