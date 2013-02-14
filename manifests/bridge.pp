@@ -1,5 +1,4 @@
-class vswitch::bridge (
-  $name,
+define vswitch::bridge (
   $external_ids = "",
   $ensure = "present"
 ) {
