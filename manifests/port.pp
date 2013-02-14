@@ -1,5 +1,5 @@
-class vswitch::port (
-  $interface,
+define vswitch::port (
+  $interface = $name,
   $bridge,
   $ensure = present
 ) {
